@@ -1,45 +1,100 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { Platform } from 'react-native';
+import React from "react";
+import "../global.css";
+import { Tabs } from "expo-router";
+import Ionicons from "@expo/vector-icons/Ionicons";
+import { BlurView } from "expo-blur";
+import { LinearGradient } from "expo-linear-gradient";
 
-import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
-import { useColorScheme } from '@/hooks/useColorScheme';
-
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
+const TabBarIcon = ({ focused, title }: any) => {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-        tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
-          ios: {
-            // Use a transparent background on iOS to show the blur effect
-            position: 'absolute',
-          },
-          default: {},
-        }),
-      }}>
-      <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="explore"
-        options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-    </Tabs>
+    <>
+      <Ionicons size={30} name={title} color={focused ? "#ab8bff" : "white"} />
+    </>
   );
-}
+};
+
+const _layout = () => {9
+  return (
+    <LinearGradient
+      colors={["#1A2A6C", "#B21F1F", "#FDBB2D"]}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 2 }}
+      style={{ flex: 1, position: 'relative'}}
+    >
+      <Tabs
+        screenOptions={{
+            sceneStyle:{
+                backgroundColor: 'transparent'
+            },
+          tabBarShowLabel: false,
+          tabBarBackground: () => (
+            <BlurView intensity={100} tint="dark" style={{ flex: 1 }} />
+          ),
+          tabBarIconStyle: {
+            height: 40,
+            width: 40,
+            justifyContent: "center",
+            alignItems: "center",
+          },
+          tabBarItemStyle: {
+            width: "100%",
+            height: "100%",
+            justifyContent: "flex-start",
+            alignItems: "center",
+          },
+
+          tabBarStyle: {
+            // marginHorizontal: 20,
+            // marginBottom: 36,
+            //   height: 90,
+            // borderRadius: 30,
+            // borderWidth: 4,
+            // borderColor: 'red'
+            position: "absolute",
+            backgroundColor: "transparent",
+            borderTopWidth: 0,
+          },
+        }}
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            title: "Home",
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <TabBarIcon focused={focused} title={"home"} />
+            ),
+          }}
+        />
+
+        <Tabs.Screen
+          name="search"
+          options={{
+            title: "Search",
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <TabBarIcon focused={focused} title={"search"} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="saved"
+          options={{
+            title: "Saved",
+            headerShown: false,
+            tabBarIcon: ({ focused }) => (
+              <TabBarIcon focused={focused} title={"bookmarks"} />
+            ),
+          }}
+        />
+      </Tabs>
+    </LinearGradient>
+  );
+};
+
+export default _layout;
+
+/*
+       
+
+*/
