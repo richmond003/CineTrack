@@ -23,7 +23,6 @@ const Search = () => {
     return () => clearTimeout(timedRequest);
   }, [searchQuery]);
 
-  console.log(typeof data)
   return (
     <View className=" flex-1 pt-20">
       <FlatList
@@ -63,7 +62,7 @@ const Search = () => {
               {error && (
                 <Text className="text-red-500">Error : {error.message}</Text>
               )}
-            
+
               {!loading && !error && searchQuery.trim() && (
                 <Text className="text-white font-medium text-xl w-full  overflow-hidden">
                   Search results for{" "}
@@ -81,12 +80,18 @@ const Search = () => {
         }
         ListEmptyComponent={
           data?.length <= 0 && searchQuery.trim().length > 0 ? (
-                <>
-                  <View className="justify-center items-center">
-                    <Text className="text-white font-extrabold text-2xl text-center">No Result for {searchQuery}</Text>
-                  </View>
-                </>
-              ): <Text className="text-center place-content-center">Search for a Movie</Text>
+            <>
+              <View className="justify-center items-center">
+                <Text className="text-white font-extrabold text-2xl text-center">
+                  No Result for {searchQuery}
+                </Text>
+              </View>
+            </>
+          ) : searchQuery.trim().length <= 0 ? (
+            <Text className="text-center place-content-center">
+              Search for a Movie
+            </Text>
+          ) : null
         }
       />
     </View>

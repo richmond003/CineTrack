@@ -12,7 +12,9 @@ interface Show {
     first_air_date: string;
     vote_average: number;
     vote_count: number;
-    isCols: boolean
+    isCols: boolean;
+    manual_type: string;
+    media_type: string;
 }
 
 interface TrendingMovies extends Movie {

@@ -14,8 +14,9 @@ const fetching = async (endpointUrl: string)=>{
 
     if(!res.ok) throw new Error(`Failed to fetch data ${res.statusText}`)
     const data = await res.json();
-    return await data.results;
+    return await (data.results || data.cast || data);
 }
+
 export const fetchData = async ({query}: {query?: string}) => {
     let data: any = {};
     if (query) {
@@ -44,5 +45,18 @@ export const fetchData = async ({query}: {query?: string}) => {
         }
     }
  
+    return data
+}
+
+export const fetchDetails = async ({id, type}: any)=>{
+    let data: any = {};
+    const getDetails = await fetching(`/${type}/${id}`);
+    const getCredits = await fetching(`/${type}/${id}/credits`);
+    const getSimilar = await fetching(`/${type}/${id}/similar`)
+    data = {
+        details: getDetails,
+        credits: getCredits,
+        similar: getSimilar
+    }
     return data
 }

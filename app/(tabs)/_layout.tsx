@@ -13,7 +13,7 @@ const TabBarIcon = ({ focused, title }: any) => {
   );
 };
 
-const _layout = () => {9
+const _layout = () => {
   return (
     <LinearGradient
       colors={["#1A2A6C", "#B21F1F", "#FDBB2D"]}

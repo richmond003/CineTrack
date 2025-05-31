@@ -3,10 +3,27 @@ import React from "react";
 import { Link } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
-const Card = ({ id, title, name, poster_path, release_date, first_air_date, vote_average,isCols }: Show) => {
+const Card = ({
+  id,
+  title,
+  name,
+  poster_path,
+  release_date,
+  first_air_date,
+  vote_average,
+  isCols,
+  media_type,
+  manual_type
+}: Show) => {
   return (
-    <View className={isCols? "w-[31%] h-60" : "w-40 h-60"}>
-      <Link href={`/movie/${[id]}`} asChild>
+    <View className={isCols ? "w-[31%] h-60" : "w-40 h-60"}>
+      <Link
+        href={{
+          pathname: "/movie/[id]",
+          params: { id: id, type: media_type || manual_type },
+        }}
+        asChild
+      >
         <TouchableOpacity>
           <Image
             source={{
@@ -18,18 +35,19 @@ const Card = ({ id, title, name, poster_path, release_date, first_air_date, vote
             resizeMode="stretch"
           />
           <View className="px-2">
-            <Text
-              numberOfLines={1}
-              className="text-white text-xs  font-medium"
-            >
+            <Text numberOfLines={1} className="text-white text-xs  font-medium">
               {title || name}
             </Text>
             <View className="flex-row  justify-between items-center">
               <View className="flex-row items-center justify-start gap-1">
                 <Ionicons name={"star"} color={"yellow"} size={10} />
-                <Text className="text-gray-400 text-xs">{(vote_average/2).toFixed(1)}</Text>
+                <Text className="text-gray-400 text-xs">
+                  {(vote_average / 2).toFixed(1)}
+                </Text>
               </View>
-              <Text className="text-gray-400 text-xs">{(release_date || first_air_date)?.split('-')[0]}</Text>
+              <Text className="text-gray-400 text-xs">
+                {(release_date || first_air_date)?.split("-")[0]}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>

@@ -1,7 +1,7 @@
 import { View, Text, FlatList } from "react-native";
 import React from "react";
 import Card from "./Card";
-const Section = ({ data, title }: any) => {
+const Section = ({ data, title, type }: any) => {
   return (
     <View className="flex-col gap-1">
       <Text className="text-white text-2xl font-bold pl-2">{title}</Text>
@@ -10,7 +10,7 @@ const Section = ({ data, title }: any) => {
         horizontal
         showsHorizontalScrollIndicator={false}
         keyExtractor={(show, i) => show?.id.toString()}
-        renderItem={({item}) => (<Card {...item}/>)}
+        renderItem={({item}) => (<Card {...item} manual_type={type} />)}
         contentContainerStyle={{
           paddingHorizontal: 2,
           // paddingLeft: 2,
