@@ -6,6 +6,8 @@ import Card from "@/components/Card";
 import SearchBar from "@/components/SearchBar";
 const Search = () => {
   const [searchQuery, setSearchQuery] = useState("");
+  const [scrollY, setScrollY] = useState(0);
+  const [reload, setReload] = useState(false);
   const { data, loading, error, refetchData, reset } = useFetch(
     () => fetchData({ query: searchQuery }),
     false
@@ -21,7 +23,7 @@ const Search = () => {
       }
     }, 500);
     return () => clearTimeout(timedRequest);
-  }, [searchQuery]);
+  }, [searchQuery, reload]);
 
   return (
     <View className=" flex-1 pt-20">
@@ -31,6 +33,10 @@ const Search = () => {
         renderItem={({ item }) => <Card {...item} isCols={true} />}
         keyExtractor={(item) => item.id.toString()}
         numColumns={3}
+        onScroll={({ nativeEvent }) => {
+          setScrollY(Math.round(nativeEvent.contentOffset.y));
+          setReload(scrollY < -1 ? true : false);
+        }}
         columnWrapperStyle={{
           alignContent: "center",
           justifyContent: "space-between",
@@ -44,6 +50,14 @@ const Search = () => {
         ListHeaderComponent={
           <>
             <View className="w-full  mb-5 ">
+               {loading && (
+                <ActivityIndicator
+                  size={"large"}
+                  color={'orange'}
+                  className="mt-50 mb-30 "
+
+                />
+              )}
               <SearchBar
                 value={searchQuery}
                 onChangeText={(text: string) => {
@@ -52,13 +66,7 @@ const Search = () => {
               />
             </View>
             <View className="mx-6 ">
-              {loading && (
-                <ActivityIndicator
-                  size={"large"}
-                  color="#0000ff"
-                  className="mt-50"
-                />
-              )}
+             
               {error && (
                 <Text className="text-red-500">Error : {error.message}</Text>
               )}

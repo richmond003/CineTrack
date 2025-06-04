@@ -8,7 +8,7 @@ import { LinearGradient } from "expo-linear-gradient";
 const TabBarIcon = ({ focused, title }: any) => {
   return (
     <>
-      <Ionicons size={30} name={title} color={focused ? "#ab8bff" : "white"} />
+      <Ionicons size={30} name={title} color={focused ? "white" : "grey"} />
     </>
   );
 };

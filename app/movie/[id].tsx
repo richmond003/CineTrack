@@ -3,8 +3,8 @@ import {
   Text,
   ScrollView,
   ActivityIndicator,
-  Image,
   FlatList,
+  ImageBackground,
 } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
@@ -17,13 +17,11 @@ import Section from "@/components/Section";
 
 const DetailScreen = () => {
   const { id, type } = useLocalSearchParams();
-  const { data, loading, error } = useFetch(() => fetchDetails({ id: id, type: type })
+  const { data, loading, error } = useFetch(() =>
+    fetchDetails({ id: id, type: type })
   );
-  // const loading = false;
-  // const error = false;
- 
-  const arr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
+  const arr: number[] = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   return (
     <LinearGradient
       colors={["#1A2A6C", "#B21F1F", "#FDBB2D"]}
@@ -42,38 +40,47 @@ const DetailScreen = () => {
           <Text>Error: {error?.message}</Text>
         ) : (
           <>
-            <View
-              className=" w-full  h-[50%]"
-              style={{
-                height: 400,
+            <ImageBackground
+              source={{
+                uri: `https://image.tmdb.org/t/p/w500${data?.details.backdrop_path || data?.details.poster_path}`,
               }}
+              style={{
+                width: "100%",
+                height: 370,
+                justifyContent: "flex-end",
+              }}
+              resizeMode= 'cover'
             >
-              <Image
-                source={{
-                  uri:`https://image.tmdb.org/t/p/w500${data?.details.poster_path}`,
+              <View
+                style={{
+                  backgroundColor: "rgba(0, 0, 0, 0.4)",
+                  paddingVertical: 6,
+                  paddingHorizontal: 10,
                 }}
-                className="h-full w-full absolute"
-                resizeMode="cover"
-              />
-              <View className="absolute bottom-0 flex-row px-2 items-center justify-between w-full z-40">
-                <View className="fle-col justify-center">
-                  <Text className="text-4xl font-extrabold text-white">{data?.details?.title||data?.details?.name||'Title'}</Text>
-                  <Text className="font-medium text-lg text-white">{data?.details?.tagline||'TagLine'}</Text>
-                </View>
+              >
+                <Text className="text-4xl font-extrabold text-white">
+                  {data?.details?.title || data?.details?.name || "Title"}
+                </Text>
+                <Text className="font-medium text-lg text-white">
+                  {data?.details?.tagline}
+                </Text>
               </View>
-            </View>
+            </ImageBackground>
             <View className="flex-col gap-3 w-full px-2">
               <Text className="text-white text-2xl font-bold">StoryLine</Text>
               <Text className="text-white font-light text-xl text-justify">
-               {data?.details.overview}
+                {data?.details.overview}
               </Text>
             </View>
 
             <FlatList
-              data={data?.credits.filter((item: any)=> item.known_for_department === 'Acting' && item.profile_path)}
+              data={data?.credits.filter(
+                (item: any) =>
+                  item.known_for_department === "Acting" && item.profile_path
+              )}
               horizontal
               showsHorizontalScrollIndicator={false}
-              renderItem={({item}) => (
+              renderItem={({ item }) => (
                 <Avatar
                   size={70}
                   rounded
@@ -91,9 +98,11 @@ const DetailScreen = () => {
               className="mt-7"
             />
             <View className="mt-10 " style={{ marginBottom: 40 }}>
-              <Section 
-              data={data?.similar.filter((item : any)=> item.poster_path)} 
-              title={"Similar"} type={type}/>
+              <Section
+                data={data?.similar.filter((item: any) => item.poster_path)}
+                title={"Similar"}
+                type={type}
+              />
             </View>
           </>
         )}
@@ -103,3 +112,13 @@ const DetailScreen = () => {
 };
 
 export default DetailScreen;
+
+/* 
+
+<View>
+                  <Text className="text-4xl font-extrabold text-white">{data?.details?.title||data?.details?.name||'Title'}</Text>
+                  <Text className="font-medium text-lg text-white">{data?.details?.tagline}</Text>
+                </View>
+
+
+*/
